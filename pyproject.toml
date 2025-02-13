@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bioemu_benchmarks"
+version = "0.0.1"
+authors = [
+  { name="BioEmu authors" },
+]
+description = "Accompanying set of benchmarks for BioEmu 1.0 paper."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: System :: Benchmark"
+]
+dependencies = [
+  "mdtraj >= 1.9.9",
+  "matplotlib >= 3.8.0",
+  "pydantic >= 2.1.1",
+  "numpy >= 1.26.4",
+  "pandas >= 2.1.4",
+  "scipy >= 1.11.4",
+  "joblib >= 1.4.2",
+  "biopython >= 1.5.9",
+  "urllib3 < 3.0.0",
+  "tqdm >= 4.66.1",
+  "requests >= 2.32.3",
+  "h5py >= 3.10.0",
+  "scikit-learn >= 1.5.2" ,
+  "fire >= 0.5.0",
+  "seaborn >= 0.13.2"
+]
+
+[project.urls] # URLs don't exist yet
+Homepage = "https://github.com/microsoft/bioemu-benchmarks"
+Issues = "https://github.com/microsoft/bioemu-benchmarks/issues"
+[tool.ruff]
+line-length = 100
+
+[project.scripts]
+bioemu-bench = "bioemu_benchmarks.scripts.bioemu_bench:cli"
+
+[tool.ruff.lint]
+ignore = [
+  # W605: invalid escape sequence -- triggered by pseudo-LaTeX in comments
+  "W605",
+  # E402: Module level import not at top of file -- triggered by python path manipulations
+  "E402",
+  # E741:  Do not use variables named 'l', 'o', or 'i' -- disagree with PEP8
+  "E741",
+]

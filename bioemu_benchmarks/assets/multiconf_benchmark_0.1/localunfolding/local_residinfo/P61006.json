@@ -1,0 +1,5 @@
+{
+    "alignment_resid_ranges": null,
+    "metric_resid_ranges": [[18, 28]],
+    "context_resid_ranges": [[10, 13], [42, 47], [58, 62], [150, 158]]
+}

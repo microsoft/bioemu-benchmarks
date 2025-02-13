@@ -1,0 +1,22 @@
+name: bioemu-benchmarks
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - pip=23.3
+  - mdtraj=1.9.9
+  - python=3.10.12
+  - matplotlib==3.8.0
+  - pydantic=2.1.1
+  - numpy==1.26.4
+  - pandas==2.1.4
+  - scipy==1.11.4
+  - joblib==1.4.2
+  - scikit-learn==1.5.2
+  - seaborn==0.13.2
+  - pip:
+      - bio==1.5.9
+      - urllib3<2.0.0
+      - tqdm==4.66.1
+      - fire==0.5.0
+      - h5py>=3.10.0

@@ -1,0 +1,7 @@
+# Definitions for the folding free energy benchmark v0.1
+
+The folding free energy benchmark has the following substructure:
+* `indexed_samples.csv`: contains sequence information for each evaluated test case. Test case identifiers follow PDB IDs where possible. Mutations of a wild type are indicated by a double underscore after the wild type ID. Mutations are specified by the one letter code of the wild type amino acid, index of the mutated residue and one letter code of amino acid in mutant. Multiple mutations are separated by underscores. E.g. `<wt ID>__A23B_C01D`. 
+* `system_info.csv`: contains reference experimental ΔG (`dg_exp`) and ΔΔG values (`ddg_exp`), as well as measurement confidence intervals for ΔG (`dg_ci95_low` and `dg_ci95_high`). All energy related entries use units of kcal/mol. The file further contains IDs for each system (`name`), its corresponding wild type (`name_wt`), sequence information (`sequence`) and the number of samples recommended to achieve sufficient accuracy for free energy predictions (`num_samples`). `wt_only_reference` indicates whether the system should be used for full metric evaluation or ΔΔG evaluation only. 
+* `reference_wildtypes`: collects reference structures for wild type systems in PDB format.
+* `reference_mutants`: collects reference structures for mutants systems in PDB format.
