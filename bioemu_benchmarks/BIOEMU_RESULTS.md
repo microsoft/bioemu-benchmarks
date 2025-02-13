@@ -2,7 +2,7 @@
 
 Results as generated from samples using the public release of [`bioemu`](https://github.com/microsoft/bioemu) slightly differ from those in the [preprint](https://www.biorxiv.org/content/10.1101/2024.12.05.626885v1.abstract). The main reason for this is that the public release of `bioemu` uses Evoformer embeddings as computed by [Colabfold](https://github.com/sokrypton/ColabFold) for ease of use, which involve both a different sequence search method (mmseqs2 vs. hhblits) and sequence database (BFD vs. Uniclust30) compared to the original AlphaFold2 code that we had used in the preprint.
 The released code also uses a faster sampler by default (DPM with 30 steps) instead of the sampler used for the paper (Heun sampler with 100 steps).
-In the interest of transparency, here we deposit benchmark results for our internal model (left) as well as those obtained using the public release of the code (right).
+In the interest of transparency, here we deposit benchmark results for our internal model (right) as well as those obtained using the public release of the code (left).
 
 ## Multiconf benchmarks
 
