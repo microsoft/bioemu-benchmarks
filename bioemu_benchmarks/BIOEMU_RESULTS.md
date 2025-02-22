@@ -46,11 +46,11 @@ In the interest of transparency, here we deposit benchmark results for our inter
 | ----------------------------------- | ----------------------------------- |
 | ![bioemu-multiconf-unfolding-coverage-u](/repo_assets/bioemu_localunfolding_fnc_unfold_u_coverage.png) |  ![paper-multiconf-unfolding-coverage-u](/repo_assets/paper_localunfolding_fnc_unfold_u_coverage.png) |
 
-
+<!---
 | BioEmu-1 (folding) | Paper (folding) |
 | ----------------------------------- | ----------------------------------- |
 | ![bioemu-multiconf-unfolding-free-f](/repo_assets/bioemu_localunfolding_fnc_unfold_f_free_energy.png) |   ![paper-multiconf-unfolding-free-f](/repo_assets/paper_localunfolding_fnc_unfold_f_free_energy.png) |
-
+-->
 
 | BioEmu-1 (unfolding) | Paper (unfolding) |
 | ----------------------------------- | ----------------------------------- |
