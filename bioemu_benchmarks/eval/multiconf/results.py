@@ -91,12 +91,12 @@ class MulticonfResults(BenchmarkResults):
                                     data=value,
                                 )
 
-    def plot(self, results_dir: StrPath) -> None:
+    def plot(self, output_dir: StrPath) -> None:
         """
         Main entrypoint to generate plots
 
         Args:
-            results_dir: Directory to save plot results
+            output_dir: Directory to save plot results
 
         """
 
@@ -120,8 +120,8 @@ class MulticonfResults(BenchmarkResults):
 
             # plot coverage
 
-            if not os.path.isdir(results_dir):
-                os.makedirs(results_dir)
+            if not os.path.isdir(output_dir):
+                os.makedirs(output_dir)
 
             for label, coverage_results in self.coverage.items():
                 thresholds, coverages = coverage_results[metric_type]
@@ -139,7 +139,7 @@ class MulticonfResults(BenchmarkResults):
                 plt.ylabel("0.1% Coverage")
 
                 fig.savefig(
-                    os.path.join(results_dir, f"{label}_{metric_type.value}_coverage.png"),
+                    os.path.join(output_dir, f"{label}_{metric_type.value}_coverage.png"),
                     dpi=300,
                     bbox_inches="tight",
                 )
@@ -159,7 +159,7 @@ class MulticonfResults(BenchmarkResults):
                 )
                 fig.savefig(
                     os.path.join(
-                        results_dir,
+                        output_dir,
                         f"{self.benchmark.value}_{metric_type.value}_free_energy.png",
                     ),
                     dpi=300,
@@ -169,26 +169,26 @@ class MulticonfResults(BenchmarkResults):
                 fig = plot_free_energy_landscapes_by_fnc_in_grid(sample_metrics)
                 fig.savefig(
                     os.path.join(
-                        results_dir,
+                        output_dir,
                         f"{self.benchmark.value}_{metric_type.value}_free_energy.png",
                     ),
                     dpi=300,
                     bbox_inches="tight",
                 )
 
-    def save_closest_samples(self, results_dir: StrPath) -> None:
+    def save_closest_samples(self, output_dir: StrPath) -> None:
         """
         Saves closest samples to references in PDB format under `results_dir`
 
         Args:
-            results_dir: Directory to save closest sample results.
+            output_dir: Directory to save closest sample results.
                          PDB files will be stored under the `closest` subdirectory
                          of `results_dir`
         """
         assert (
             not self.benchmark == Benchmark.SINGLECONF_LOCALUNFOLDING
         ), "Save close samples not supported for SingleconfBenchmark"
-        closest_dir = os.path.join(results_dir, "closest")
+        closest_dir = os.path.join(output_dir, "closest")
         os.makedirs(closest_dir, exist_ok=True)
 
         for test_case, meval in self.per_system.items():
