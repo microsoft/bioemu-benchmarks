@@ -103,7 +103,7 @@ class MulticonfResults(BenchmarkResults):
         per_system_evals = self.per_system
 
         benchmark_value = (
-            "crypticpocket_holo"
+            "multiconf_crypticpocket_holo"
             if self.benchmark == Benchmark.MULTICONF_CRYPTICPOCKET
             else self.benchmark.value
         )
