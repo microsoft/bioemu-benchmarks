@@ -237,7 +237,7 @@ class MulticonfResults(BenchmarkResults):
 
             # Select suffix for plotting in crypticpocket benchmark.
             if self.benchmark == Benchmark.MULTICONF_CRYPTICPOCKET:
-                suffix = f"_{benchmark_value.split("_")[-1]}"
+                suffix = f"_{benchmark_value.split('_')[-1]}"
             else:
                 suffix = ""
 
