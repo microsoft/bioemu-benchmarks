@@ -48,6 +48,22 @@ EXPECTED_SCRIPT_EVAL_OUTPUTS: dict[str, list[str]] = {
         "singleconf_localunfolding_fnc_unfold_u_coverage.png",
         "singleconf_localunfolding_fnc_unfold_u_free_energy.png",
     ],
+    "multiconf_crypticpocket": [
+        "results.h5",
+        "results.pkl",
+        "closest",
+        "multiconf_crypticpocket_apo_rmsd_free_energy.png",
+        "multiconf_crypticpocket_apo_rmsd_coverage.png",
+        "multiconf_crypticpocket_holo_rmsd_free_energy.png",
+        "multiconf_crypticpocket_holo_rmsd_coverage.png",
+    ],
+    "multiconf_domainmotion": [
+        "results.h5",
+        "results.pkl",
+        "closest",
+        "multiconf_domainmotion_rmsd_coverage.png",
+        "multiconf_domainmotion_rmsd_free_energy.png",
+    ],
 }
 
 
