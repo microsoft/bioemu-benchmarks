@@ -102,79 +102,82 @@ class MulticonfResults(BenchmarkResults):
 
         per_system_evals = self.per_system
 
-        benchmark_value = (
-            "multiconf_crypticpocket_holo"
+        benchmark_values = (
+            [f"{self.benchmark.value}_holo", f"{self.benchmark.value}_apo"]
             if self.benchmark == Benchmark.MULTICONF_CRYPTICPOCKET
-            else self.benchmark.value
+            else [self.benchmark.value]
         )
 
-        for metric_type in tqdm(self.coverage[benchmark_value].keys(), desc="Plotting results..."):
-            # if a benchmark specific success threshold is defined, use it
+        for benchmark_value in benchmark_values:
+            for metric_type in tqdm(
+                self.coverage[benchmark_value].keys(), desc="Plotting results..."
+            ):
+                # if a benchmark specific success threshold is defined, use it
 
-            success_threshold = None
-            if self.benchmark in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS:
-                if metric_type in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark]:
-                    success_threshold = BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark][
-                        metric_type
-                    ]
+                success_threshold = None
+                if self.benchmark in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS:
+                    if metric_type in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark]:
+                        success_threshold = BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark][
+                            metric_type
+                        ]
 
-            # plot coverage
+                # plot coverage
 
-            if not os.path.isdir(output_dir):
-                os.makedirs(output_dir)
+                if not os.path.isdir(output_dir):
+                    os.makedirs(output_dir)
 
-            for label, coverage_results in self.coverage.items():
-                thresholds, coverages = coverage_results[metric_type]
-                fig = plt.figure(figsize=(3, 3))
-                ax = plt.gca()
-                plot_coverage_bootstrap(
-                    thresholds=thresholds,
-                    coverages=coverages,
-                    ax=ax,
-                    metric_type=metric_type,
-                    success_threshold=success_threshold,
-                )
+                for label, coverage_results in self.coverage.items():
+                    thresholds, coverages = coverage_results[metric_type]
+                    fig = plt.figure(figsize=(3, 3))
+                    ax = plt.gca()
+                    plot_coverage_bootstrap(
+                        thresholds=thresholds,
+                        coverages=coverages,
+                        ax=ax,
+                        metric_type=metric_type,
+                        success_threshold=success_threshold,
+                    )
 
-                plt.xlabel(metric_type.value.upper() + " " + METRICS_UNIT[metric_type])
-                plt.ylabel("0.1% Coverage")
+                    plt.xlabel(metric_type.value.upper() + " " + METRICS_UNIT[metric_type])
+                    plt.ylabel("0.1% Coverage")
 
-                fig.savefig(
-                    os.path.join(output_dir, f"{label}_{metric_type.value}_coverage.png"),
-                    dpi=300,
-                    bbox_inches="tight",
-                )
+                    fig.savefig(
+                        os.path.join(output_dir, f"{label}_{metric_type.value}_coverage.png"),
+                        dpi=300,
+                        bbox_inches="tight",
+                    )
 
-            # extract metrics per sample
+                # extract metrics per sample
 
-            sample_metrics = {
-                test_case: _eval.metrics_against_references[metric_type]
-                for test_case, _eval in per_system_evals.items()
-            }
+                sample_metrics = {
+                    test_case: _eval.metrics_against_references[metric_type]
+                    for test_case, _eval in per_system_evals.items()
+                }
 
-            # plot free energies
+                # plot free energies
 
-            if metric_type not in [MetricType.FNC_UNFOLD_F, MetricType.FNC_UNFOLD_U]:
-                fig = plot_2D_free_energy_landscapes_in_grid(
-                    sample_metrics, metric_type, success_threshold=success_threshold
-                )
-                fig.savefig(
-                    os.path.join(
-                        output_dir,
-                        f"{self.benchmark.value}_{metric_type.value}_free_energy.png",
-                    ),
-                    dpi=300,
-                    bbox_inches="tight",
-                )
-            else:
-                fig = plot_free_energy_landscapes_by_fnc_in_grid(sample_metrics)
-                fig.savefig(
-                    os.path.join(
-                        output_dir,
-                        f"{self.benchmark.value}_{metric_type.value}_free_energy.png",
-                    ),
-                    dpi=300,
-                    bbox_inches="tight",
-                )
+                if metric_type not in [MetricType.FNC_UNFOLD_F, MetricType.FNC_UNFOLD_U]:
+                    fig = plot_2D_free_energy_landscapes_in_grid(
+                        sample_metrics, metric_type, success_threshold=success_threshold
+                    )
+                    fig.savefig(
+                        os.path.join(
+                            output_dir,
+                            f"{benchmark_value}_{metric_type.value}_free_energy.png",
+                        ),
+                        dpi=300,
+                        bbox_inches="tight",
+                    )
+                else:
+                    fig = plot_free_energy_landscapes_by_fnc_in_grid(sample_metrics)
+                    fig.savefig(
+                        os.path.join(
+                            output_dir,
+                            f"{benchmark_value}_{metric_type.value}_free_energy.png",
+                        ),
+                        dpi=300,
+                        bbox_inches="tight",
+                    )
 
     def save_closest_samples(self, output_dir: StrPath) -> None:
         """
@@ -221,44 +224,59 @@ class MulticonfResults(BenchmarkResults):
         """
         aggregate_metrics: dict[str, float] = {}
 
-        # De-nest nested dicts.
-        krecall_metrics = self.krecall[self.benchmark.value]
-        coverage_metrics = self.coverage[self.benchmark.value]
+        benchmark_values = (
+            [f"{self.benchmark.value}_holo", f"{self.benchmark.value}_apo"]
+            if self.benchmark == Benchmark.MULTICONF_CRYPTICPOCKET
+            else [self.benchmark.value]
+        )
 
-        for metric in krecall_metrics:
-            assert metric in coverage_metrics
+        for benchmark_value in benchmark_values:
+            # De-nest nested dicts.
+            krecall_metrics = self.krecall[benchmark_value]
+            coverage_metrics = self.coverage[benchmark_value]
 
-            # De-nest at metric level.
-            krecall = krecall_metrics[metric]
-            coverage = coverage_metrics[metric]
-
-            # Get coverage for metric.
-            if (
-                self.benchmark in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS
-                and metric in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark]
-            ):
-                threshold = BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark][metric]
+            # Select suffix for plotting in crypticpocket benchmark.
+            if self.benchmark == Benchmark.MULTICONF_CRYPTICPOCKET:
+                suffix = f"_{benchmark_value.split('_')[-1]}"
             else:
-                threshold = METRICS_SUCCESS_THRESHOLD[metric]
+                suffix = ""
 
-            # Extract coordinates and compute mean over system axis.
-            coverage_coordinates, coverage_per_system = coverage
-            coverage_mean = np.mean(coverage_per_system, axis=0)
+            for metric in krecall_metrics:
+                assert metric in coverage_metrics
 
-            # Get area under the curve.
-            coverage_auc = np.trapz(coverage_mean, coverage_coordinates)
-            # Get value at metric / benchmark threshold.
-            coverage_threshold = np.interp(threshold, coverage_coordinates, coverage_mean)
+                # De-nest at metric level.
+                krecall = krecall_metrics[metric]
+                coverage = coverage_metrics[metric]
 
-            aggregate_metrics.update(
-                {
-                    f"krecall_mean_{metric.value}": float(
-                        np.mean([x[0] for x in krecall.values()])
-                    ),
-                    f"krecall_std_{metric.value}": float(np.mean([x[1] for x in krecall.values()])),
-                    f"coverage_auc_{metric.value}": float(coverage_auc),
-                    f"coverage_threshold_{metric.value}": float(coverage_threshold),
-                }
-            )
+                # Get coverage for metric.
+                if (
+                    self.benchmark in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS
+                    and metric in BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark]
+                ):
+                    threshold = BENCHMARK_SPECIFIC_SUCCESS_THRESHOLDS[self.benchmark][metric]
+                else:
+                    threshold = METRICS_SUCCESS_THRESHOLD[metric]
+
+                # Extract coordinates and compute mean over system axis.
+                coverage_coordinates, coverage_per_system = coverage
+                coverage_mean = np.mean(coverage_per_system, axis=0)
+
+                # Get area under the curve.
+                coverage_auc = np.trapz(coverage_mean, coverage_coordinates)
+                # Get value at metric / benchmark threshold.
+                coverage_threshold = np.interp(threshold, coverage_coordinates, coverage_mean)
+
+                aggregate_metrics.update(
+                    {
+                        f"krecall_mean_{metric.value}{suffix}": float(
+                            np.mean([x[0] for x in krecall.values()])
+                        ),
+                        f"krecall_std_{metric.value}{suffix}": float(
+                            np.mean([x[1] for x in krecall.values()])
+                        ),
+                        f"coverage_auc_{metric.value}{suffix}": float(coverage_auc),
+                        f"coverage_threshold_{metric.value}{suffix}": float(coverage_threshold),
+                    }
+                )
 
         return aggregate_metrics
