@@ -17,8 +17,12 @@ def test_filter_unphysical_traj() -> None:
     traj = filter_unphysical_traj(traj, strict=True)
     assert traj.n_frames == 1
 
-    # Modify one coord so that it's rejected. Generate a fake clash
-    traj.xyz[:, 0, :] = traj.xyz[:, 20, :]
+    # Modify one coord so that it's rejected. Generate a fake clash.
+    # NOTE: our clash filter assumes rigid frames and prefilters based on Ca for sake of efficiency.
+    # Because of this, we make the first and last full non-glycine residue clash (residues have
+    # 5 atoms due to C beta).
+    idx_no_glycine = traj.top.select("not resname GLY")
+    traj.xyz[:, idx_no_glycine[:5], :] = traj.xyz[:, idx_no_glycine[-5:], :]
 
     with pytest.raises(AssertionError):
         filter_unphysical_traj(traj, strict=True)
