@@ -190,6 +190,11 @@ def _compute_filtered_contacts(
     a cutoff will be considered for the final contact computation, reducing the number of contacts
     considered significantly. This should speed up contact computation by a factor of ten.
 
+    NOTE: This filtering assumes that all atoms in a residue will be distorted together with the Ca.
+    It will e.g. not detect a single N from a residue colliding with something far away if the
+    remaining atoms behave normally. However, this situation should not happen as we use a rigid
+    frame based representation and MD data should be fine as well due to the harmonic potentials.
+
     Args:
         trajectory: Trajectory to compute contacts for.
         ca_clash_cutoff: Cutoff used for Ca based prefiltering. Units are Angstrom.
