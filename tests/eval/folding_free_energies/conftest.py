@@ -13,6 +13,9 @@ from bioemu_benchmarks.eval.folding_free_energies.utils import (
 
 from ... import TEST_DATA_DIR
 
+TARGET_DG_MAE = 1.1130793171077986
+TARGET_DDG_MAE = 1.223408892114224
+TARGET_MAE = np.array([TARGET_DG_MAE, TARGET_DDG_MAE])
 
 @dataclass
 class FNCTestData:
@@ -127,9 +130,9 @@ def test_free_energy_results() -> pd.DataFrame:
 def test_metrics_dg() -> dict[str, float]:
     """Target metrics for dG."""
     metrics = {
-        "mae": 1.1010791628428436,
-        "pearson_corrcoef": -0.9999999999999998,
-        "spearman_corrcoef": -0.9999999999999999,
+        "mae": TARGET_DG_MAE,
+        "pearson_corrcoef": 1.0,
+        "spearman_corrcoef": 1.0,
     }
     return metrics
 
@@ -137,5 +140,5 @@ def test_metrics_dg() -> dict[str, float]:
 @pytest.fixture
 def test_metrics_ddg() -> dict[str, float]:
     """Target metrics for ddG. Correlations are NaN since single test datapoint is present."""
-    metrics = {"mae": 2.062185936444976, "pearson_corrcoef": np.nan, "spearman_corrcoef": np.nan}
+    metrics = {"mae": TARGET_DDG_MAE, "pearson_corrcoef": np.nan, "spearman_corrcoef": np.nan}
     return metrics

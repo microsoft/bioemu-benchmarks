@@ -38,7 +38,7 @@ def _clopper_pearson_confidence_interval(
     p_folded = ratio / (
         1 + ratio
     )  # p_folded * N is subject to a binomial distribution, asymptotically normal
-    k = np.round(p_folded * num_samples).astype(int)  # Number of folded samples
+    k = np.atleast_1d(np.round(p_folded * num_samples).astype(int))  # Number of folded samples
 
     # Calculate the confidence interval using the Clopper-Pearson method
     alpha = 1 - confidence
@@ -210,7 +210,7 @@ def scatter_plot_with_errorbar(
             label.append(f"Pearson Corr {pearson_correlation:.2f}")
         if spearman_correlation is not None:
             label.append(f"Spearman Corr {spearman_correlation:.2f}")
-        ax.text(axis_range[0] + 0.5, axis_range[1] - 0.75, "\n".join(label))
+        ax.text(axis_range[0] + 0.5, axis_range[1] - 1.0, "\n".join(label))
 
     ax.plot(axis_range, axis_range, color="grey", ls=":")
     # Plot the shaded area between y=x-1 and y=x+1 with no border line (denoting area within 1 kcal
