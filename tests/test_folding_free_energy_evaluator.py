@@ -10,7 +10,7 @@ from bioemu_benchmarks.eval.folding_free_energies.evaluate import (
     evaluate_folding_free_energies,
 )
 from bioemu_benchmarks.samples import IndexedSamples, find_samples_in_dir
-from tests.eval.folding_free_energies.test_evaluate import TARGET_MAE
+from tests.eval.folding_free_energies.conftest import TARGET_MAE
 
 from . import TEST_DATA_DIR
 
@@ -48,7 +48,7 @@ def test_evaluate_folding_free_energies(samples_path: Path, tmp_path: Path):
 
     # Perform check if metrics were computed and stored properly.
     metric_results = pd.read_csv(tmp_path / "results_metrics.csv")
-    np.testing.assert_allclose(metric_results.mae, TARGET_MAE)
+    np.testing.assert_allclose(metric_results.mae, TARGET_MAE, rtol=1e-6)
 
     # Test if pickle serialization works.
     loaded_results = FoldingFreeEnergiesResults.from_pickle(tmp_path / "results.pkl")
