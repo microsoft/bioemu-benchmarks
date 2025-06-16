@@ -278,13 +278,6 @@ def analyze_dg(
     # Get the 95% confidence interval of the predicted dG.
     model_errors = [dG_df["model_errors_dg_lower"], dG_df["model_errors_dg_upper"]]
 
-    # Check for outliers. These are with thresholds 0 or 1, where folded and unfolded states are not
-    # well represented.
-    outliers = free_energy_df[free_energy_df.threshold.isin([0, 1])]
-    if len(outliers) > 0:
-        LOGGER.info(f"Found {len(outliers)} outliers for delta G benchmark:")
-        LOGGER.info(outliers.name)
-
     # Compute correlation coefficients and MAE.
     error_metrics = compute_error_metrics(model_pred=p_dGs, exp_targets=t_dGs)
 

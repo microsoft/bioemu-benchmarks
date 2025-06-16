@@ -21,7 +21,8 @@ class FNCTestData:
     test_case: str
     target_dg: float
     target_ddg: float | None
-    threshold: float
+    p_fold_thr: float
+    steepness: float
     temperature: float
 
 
@@ -32,9 +33,10 @@ def fnc_test_data_wt() -> FNCTestData:
         fnc=np.array([0.5556425, 0.9077428, 0.07344922, 0.85962605, 0.9426347]),
         test_case="1TG0",
         sequence="EVPFKVVAQFPYKSDYEDDLNFEKDQEIIVTSVEDAEWYFGEYQDSNGDVIEGIFPKSFVAVQG",
-        target_dg=-0.23769380811234617,
+        target_dg=-0.645082176012767,
         target_ddg=None,
-        threshold=0.6633663366336634,
+        p_fold_thr=0.5,
+        steepness=10.0,
         temperature=295.0,
     )
 
@@ -49,9 +51,10 @@ def fnc_test_data_mutant() -> FNCTestData:
         fnc=np.array([0.5872849, 0.08238664, 0.6484105, 0.88388467, 0.9725501]),
         sequence="EVPFKVVAQFPYKSDYEDDLNFEKDQEIIVTSVEDAEWYFGEYQCSPGDVIEGIFPKSFVAVQG",
         test_case="1TG0__D45C_N47P",
-        target_dg=-0.8126804977047636,
-        target_ddg=-0.5749866895924174,
-        threshold=0.44554455445544555,
+        target_dg=-0.6771580745606026,
+        target_ddg=-0.03207589854783566,
+        p_fold_thr=0.5,
+        steepness=10.0,
         temperature=295.0,
     )
 
