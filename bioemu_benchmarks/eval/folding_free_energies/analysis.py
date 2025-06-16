@@ -162,7 +162,8 @@ def scatter_plot_with_errorbar(
     exp_errors: np.ndarray | None = None,
     markersize: float = 3.0,
     label_mae: float | None = None,
-    label_correlation: float | None = None,
+    pearson_correlation: float | None = None,
+    spearman_correlation: float | None = None,
 ) -> matplotlib.figure.Figure:
     """
     Create a scatter plot for predicted and target free energy values.
@@ -176,7 +177,7 @@ def scatter_plot_with_errorbar(
         exp_errors: Optional experimental errors (used for error bars if provided).
         markersize: Marker size used in scatter plot.
         label_mae: Optional MAE value for free energy error used in labeling.
-        label_correlation: Optional correlation used in labeling.
+        pearson_correlation: Optional correlation used in labeling.
 
     Returns:
         Figure containing scatter plot.
@@ -201,12 +202,14 @@ def scatter_plot_with_errorbar(
     )
 
     # Create label annotations.
-    if label_mae is not None or label_correlation is not None:
+    if label_mae is not None or pearson_correlation is not None or spearman_correlation is not None:
         label = []
         if label_mae is not None:
             label.append(f"Error {label_mae:.2f} kcal/mol")
-        if label_correlation is not None:
-            label.append(f"Correlation {label_correlation:.2f}")
+        if pearson_correlation is not None:
+            label.append(f"Pearson Corr {pearson_correlation:.2f}")
+        if spearman_correlation is not None:
+            label.append(f"Spearman Corr {spearman_correlation:.2f}")
         ax.text(axis_range[0] + 0.5, axis_range[1] - 0.75, "\n".join(label))
 
     ax.plot(axis_range, axis_range, color="grey", ls=":")
@@ -293,7 +296,8 @@ def analyze_dg(
         quantity="ΔG",
         axis_range=np.array([-5.5, 2]),
         label_mae=error_metrics["mae"],
-        label_correlation=error_metrics["pearson_corrcoef"],
+        pearson_correlation=error_metrics["pearson_corrcoef"],
+        spearman_correlation=error_metrics["spearman_corrcoef"],
     )
 
     return error_metrics, error_plot
@@ -330,7 +334,8 @@ def analyze_ddg(
         axis_range=np.array([-2, 5]),
         markersize=3,
         label_mae=error_metrics["mae"],
-        label_correlation=error_metrics["pearson_corrcoef"],
+        pearson_correlation=error_metrics["pearson_corrcoef"],
+        spearman_correlation=error_metrics["spearman_corrcoef"],
     )
 
     return error_metrics, error_plot
