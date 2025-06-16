@@ -3,8 +3,7 @@ import numpy as np
 from bioemu_benchmarks.benchmarks import Benchmark
 from bioemu_benchmarks.eval.folding_free_energies.evaluate import evaluate_folding_free_energies
 from bioemu_benchmarks.samples import IndexedSamples, find_samples_in_dir
-
-TARGET_MAE = np.array([1.1130793171077986, 1.223408892114224])
+from tests.eval.folding_free_energies.conftest import TARGET_MAE
 
 
 def test_evaluate_folding_free_energies(samples_path, fnc_test_data_wt):
