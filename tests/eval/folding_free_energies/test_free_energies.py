@@ -2,7 +2,6 @@ import numpy as np
 
 from bioemu_benchmarks.eval.folding_free_energies.free_energies import (
     _compute_dG,
-    _compute_threshold,
     compute_dg_ddg_from_fnc,
 )
 
@@ -16,11 +15,6 @@ def test_compute_dG(fnc_test_data_parameterized):
     )
     np.testing.assert_allclose(dG, fnc_test_data_parameterized.target_dg)
 
-
-def test_compute_threshold(fnc_test_data_parameterized):
-    """Test threshold computation."""
-    threshold = _compute_threshold(fnc_test_data_parameterized.fnc)
-    np.testing.assert_allclose(threshold, fnc_test_data_parameterized.threshold)
 
 
 def test_compute_dg_ddg_from_fnc(fnc_test_data_wt, fnc_test_data_mutant, system_info):
