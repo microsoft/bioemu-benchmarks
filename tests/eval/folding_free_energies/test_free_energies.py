@@ -17,7 +17,6 @@ def test_compute_dG(fnc_test_data_parameterized):
     np.testing.assert_allclose(dG, fnc_test_data_parameterized.target_dg)
 
 
-
 def test_compute_dg_ddg_from_fnc(fnc_test_data_wt, fnc_test_data_mutant, system_info):
     """Test computation of multiple dGs and ddGs."""
     dict_fnc = {

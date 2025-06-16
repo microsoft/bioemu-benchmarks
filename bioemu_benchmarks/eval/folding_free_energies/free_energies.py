@@ -53,7 +53,7 @@ def compute_dg_ddg_from_fnc(
           different systems as entries and test case IDs as keys.
         system_info: Data frame containing benchmark information.
         temperature: Temperature used for free energy computation in Kelvin. Default: 295 K.
-        p_fold_thr: Threshold for foldedness, i.e., FNC value that corresponds to foldedness 0.5, 
+        p_fold_thr: Threshold for foldedness, i.e., FNC value that corresponds to foldedness 0.5,
             used as an offset in the sigmoid function. Default: 0.5.
         steepness: Steepness of the sigmoid function used to compute foldedness from FNC values.
             Default: 10.0.
@@ -86,7 +86,9 @@ def compute_dg_ddg_from_fnc(
         free_energy_results[test_case]["num_samples"] = num_samples
 
         # Compute dG and store.
-        dg_pred = _compute_dG(fnc, temperature=temperature, p_fold_thr=p_fold_thr, steepness=steepness)
+        dg_pred = _compute_dG(
+            fnc, temperature=temperature, p_fold_thr=p_fold_thr, steepness=steepness
+        )
         free_energy_results[test_case]["dg_pred"] = dg_pred
 
     # Compute ddGs from dGs.

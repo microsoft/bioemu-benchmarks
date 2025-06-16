@@ -17,6 +17,7 @@ TARGET_DG_MAE = 1.1130793171077986
 TARGET_DDG_MAE = 1.223408892114224
 TARGET_MAE = np.array([TARGET_DG_MAE, TARGET_DDG_MAE])
 
+
 @dataclass
 class FNCTestData:
     fnc: np.ndarray
