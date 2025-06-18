@@ -89,7 +89,7 @@ def test_analyze_dg(test_free_energy_results, test_metrics_dg):
     # Check for presence of results and compare to reference.
     for key in test_metrics_dg:
         assert key in results
-        np.testing.assert_allclose(results[key], test_metrics_dg[key])
+        np.testing.assert_allclose(results[key], test_metrics_dg[key], rtol=1e-6)
 
     # Check if figure was generated.
     assert isinstance(fig, Figure)

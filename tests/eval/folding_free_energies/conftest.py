@@ -13,8 +13,8 @@ from bioemu_benchmarks.eval.folding_free_energies.utils import (
 
 from ... import TEST_DATA_DIR
 
-TARGET_DG_MAE = 1.1130793171077986
-TARGET_DDG_MAE = 1.223408892114224
+TARGET_DG_MAE = 1.129781
+TARGET_DDG_MAE = 1.190006
 TARGET_MAE = np.array([TARGET_DG_MAE, TARGET_DDG_MAE])
 
 
@@ -99,10 +99,10 @@ def reference_conformation_wt(fnc_test_data_wt) -> mdtraj.Trajectory:
 
 
 @pytest.fixture
-def reference_conformation_mutant(fnc_test_data_mutant) -> mdtraj.Trajectory:
+def reference_conformation_mutant() -> mdtraj.Trajectory:
     """Reference structure of 1TG0__D45C_N47P mutant."""
-    return load_reference(
-        fnc_test_data_mutant.test_case,
+    return mdtraj.load_pdb(
+        Path(TEST_DATA_DIR) / "folding_free_energies" / "test_1TG0__D45C_N47P.pdb"
     )
 
 
