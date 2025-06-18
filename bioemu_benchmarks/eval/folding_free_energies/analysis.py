@@ -38,7 +38,7 @@ def _clopper_pearson_confidence_interval(
     p_folded = ratio / (
         1 + ratio
     )  # p_folded * N is subject to a binomial distribution, asymptotically normal
-    k = np.round(p_folded * num_samples).astype(int)  # Number of folded samples
+    k = np.atleast_1d(np.round(p_folded * num_samples).astype(int))  # Number of folded samples
 
     # Calculate the confidence interval using the Clopper-Pearson method
     alpha = 1 - confidence
@@ -162,7 +162,8 @@ def scatter_plot_with_errorbar(
     exp_errors: np.ndarray | None = None,
     markersize: float = 3.0,
     label_mae: float | None = None,
-    label_correlation: float | None = None,
+    pearson_correlation: float | None = None,
+    spearman_correlation: float | None = None,
 ) -> matplotlib.figure.Figure:
     """
     Create a scatter plot for predicted and target free energy values.
@@ -176,7 +177,8 @@ def scatter_plot_with_errorbar(
         exp_errors: Optional experimental errors (used for error bars if provided).
         markersize: Marker size used in scatter plot.
         label_mae: Optional MAE value for free energy error used in labeling.
-        label_correlation: Optional correlation used in labeling.
+        pearson_correlation: Optional Pearson's correlation used in labeling.
+        spearman_correlation: Optional Spearman's correlation used in labeling.
 
     Returns:
         Figure containing scatter plot.
@@ -201,13 +203,15 @@ def scatter_plot_with_errorbar(
     )
 
     # Create label annotations.
-    if label_mae is not None or label_correlation is not None:
+    if label_mae is not None or pearson_correlation is not None or spearman_correlation is not None:
         label = []
         if label_mae is not None:
             label.append(f"Error {label_mae:.2f} kcal/mol")
-        if label_correlation is not None:
-            label.append(f"Correlation {label_correlation:.2f}")
-        ax.text(axis_range[0] + 0.5, axis_range[1] - 0.75, "\n".join(label))
+        if pearson_correlation is not None:
+            label.append(f"Pearson Corr {pearson_correlation:.2f}")
+        if spearman_correlation is not None:
+            label.append(f"Spearman Corr {spearman_correlation:.2f}")
+        ax.text(axis_range[0] + 0.5, axis_range[1] - 1.0, "\n".join(label))
 
     ax.plot(axis_range, axis_range, color="grey", ls=":")
     # Plot the shaded area between y=x-1 and y=x+1 with no border line (denoting area within 1 kcal
@@ -275,13 +279,6 @@ def analyze_dg(
     # Get the 95% confidence interval of the predicted dG.
     model_errors = [dG_df["model_errors_dg_lower"], dG_df["model_errors_dg_upper"]]
 
-    # Check for outliers. These are with thresholds 0 or 1, where folded and unfolded states are not
-    # well represented.
-    outliers = free_energy_df[free_energy_df.threshold.isin([0, 1])]
-    if len(outliers) > 0:
-        LOGGER.info(f"Found {len(outliers)} outliers for delta G benchmark:")
-        LOGGER.info(outliers.name)
-
     # Compute correlation coefficients and MAE.
     error_metrics = compute_error_metrics(model_pred=p_dGs, exp_targets=t_dGs)
 
@@ -293,7 +290,8 @@ def analyze_dg(
         quantity="ΔG",
         axis_range=np.array([-5.5, 2]),
         label_mae=error_metrics["mae"],
-        label_correlation=error_metrics["pearson_corrcoef"],
+        pearson_correlation=error_metrics["pearson_corrcoef"],
+        spearman_correlation=error_metrics["spearman_corrcoef"],
     )
 
     return error_metrics, error_plot
@@ -330,7 +328,8 @@ def analyze_ddg(
         axis_range=np.array([-2, 5]),
         markersize=3,
         label_mae=error_metrics["mae"],
-        label_correlation=error_metrics["pearson_corrcoef"],
+        pearson_correlation=error_metrics["pearson_corrcoef"],
+        spearman_correlation=error_metrics["spearman_corrcoef"],
     )
 
     return error_metrics, error_plot

@@ -13,6 +13,10 @@ from bioemu_benchmarks.eval.folding_free_energies.utils import (
 
 from ... import TEST_DATA_DIR
 
+TARGET_DG_MAE = 1.1130793171077986
+TARGET_DDG_MAE = 1.223408892114224
+TARGET_MAE = np.array([TARGET_DG_MAE, TARGET_DDG_MAE])
+
 
 @dataclass
 class FNCTestData:
@@ -21,7 +25,8 @@ class FNCTestData:
     test_case: str
     target_dg: float
     target_ddg: float | None
-    threshold: float
+    p_fold_thr: float
+    steepness: float
     temperature: float
 
 
@@ -32,9 +37,10 @@ def fnc_test_data_wt() -> FNCTestData:
         fnc=np.array([0.5556425, 0.9077428, 0.07344922, 0.85962605, 0.9426347]),
         test_case="1TG0",
         sequence="EVPFKVVAQFPYKSDYEDDLNFEKDQEIIVTSVEDAEWYFGEYQDSNGDVIEGIFPKSFVAVQG",
-        target_dg=-0.23769380811234617,
+        target_dg=-0.645082176012767,
         target_ddg=None,
-        threshold=0.6633663366336634,
+        p_fold_thr=0.5,
+        steepness=10.0,
         temperature=295.0,
     )
 
@@ -49,9 +55,10 @@ def fnc_test_data_mutant() -> FNCTestData:
         fnc=np.array([0.5872849, 0.08238664, 0.6484105, 0.88388467, 0.9725501]),
         sequence="EVPFKVVAQFPYKSDYEDDLNFEKDQEIIVTSVEDAEWYFGEYQCSPGDVIEGIFPKSFVAVQG",
         test_case="1TG0__D45C_N47P",
-        target_dg=-0.8126804977047636,
-        target_ddg=-0.5749866895924174,
-        threshold=0.44554455445544555,
+        target_dg=-0.6771580745606026,
+        target_ddg=-0.03207589854783566,
+        p_fold_thr=0.5,
+        steepness=10.0,
         temperature=295.0,
     )
 
@@ -124,9 +131,9 @@ def test_free_energy_results() -> pd.DataFrame:
 def test_metrics_dg() -> dict[str, float]:
     """Target metrics for dG."""
     metrics = {
-        "mae": 1.1010791628428436,
-        "pearson_corrcoef": -0.9999999999999998,
-        "spearman_corrcoef": -0.9999999999999999,
+        "mae": TARGET_DG_MAE,
+        "pearson_corrcoef": 1.0,
+        "spearman_corrcoef": 1.0,
     }
     return metrics
 
@@ -134,5 +141,5 @@ def test_metrics_dg() -> dict[str, float]:
 @pytest.fixture
 def test_metrics_ddg() -> dict[str, float]:
     """Target metrics for ddG. Correlations are NaN since single test datapoint is present."""
-    metrics = {"mae": 2.062185936444976, "pearson_corrcoef": np.nan, "spearman_corrcoef": np.nan}
+    metrics = {"mae": TARGET_DDG_MAE, "pearson_corrcoef": np.nan, "spearman_corrcoef": np.nan}
     return metrics
