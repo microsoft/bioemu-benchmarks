@@ -177,7 +177,8 @@ def scatter_plot_with_errorbar(
         exp_errors: Optional experimental errors (used for error bars if provided).
         markersize: Marker size used in scatter plot.
         label_mae: Optional MAE value for free energy error used in labeling.
-        pearson_correlation: Optional correlation used in labeling.
+        pearson_correlation: Optional Pearson's correlation used in labeling.
+        spearman_correlation: Optional Spearman's correlation used in labeling.
 
     Returns:
         Figure containing scatter plot.
