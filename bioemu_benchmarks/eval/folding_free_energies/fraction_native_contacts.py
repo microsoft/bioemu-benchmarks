@@ -124,7 +124,7 @@ def _get_sequence_index_map(samples_sequence: str, reference_sequence: str) -> n
     aligned_indices_ref = _get_aligned_indices(alignments[0].seqB, alignments[0].seqA)
     assert len(aligned_indices_sample) == len(aligned_indices_ref)
 
-    ref_to_samples_map = np.full(np.max(aligned_indices_ref) + 1, -1, dtype=np.int64)
+    ref_to_samples_map = np.full(len(reference_sequence), -1, dtype=np.int64)
     for ref, smp in zip(aligned_indices_ref, aligned_indices_sample):
         ref_to_samples_map[ref] = smp
 
@@ -174,8 +174,8 @@ def get_fnc_from_samples_trajectory(
     sequence_separation: int = 3,
     contact_cutoff: float = 10.0,
     contact_beta: float = 5.0,
-    contact_lambda: float = 0.0,
-    contact_delta: float = 1.2,
+    contact_lambda: float = 1.2,
+    contact_delta: float = 0.0,
 ) -> np.ndarray:
     """
     Compute fraction of native contact scores for samples.
@@ -213,6 +213,14 @@ def get_fnc_from_samples_trajectory(
     reference_sequence = reference_conformation.top.to_fasta()[0]
     samples_sequence = samples_ca.top.to_fasta()[0]
     ref_to_samples_map = _get_sequence_index_map(samples_sequence, reference_sequence)
+
+    # Remove unmatched pairs with -1 in it
+    reference_contact_distances = reference_contact_distances[
+        np.all(ref_to_samples_map[reference_contact_indices] != -1, axis=1)
+    ]
+    reference_contact_indices = reference_contact_indices[
+        np.all(ref_to_samples_map[reference_contact_indices] != -1, axis=1)
+    ]
 
     # Map contact indices to current samples.
     aligned_contact_indices = ref_to_samples_map[reference_contact_indices]

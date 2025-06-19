@@ -264,8 +264,7 @@ def analyze_dg(
         Dictionary collecting different error metrics and analysis figure.
     """
     # Remove wild type systems which only serve as reference for ddGs.
-    free_energy_df = free_energy_df.infer_objects()
-    dG_df = free_energy_df[~free_energy_df.wt_only_reference.astype("bool")]
+    dG_df = free_energy_df.infer_objects()
 
     # Extract free energy data.
     p_dGs = dG_df.dg_pred.values.astype(float)
