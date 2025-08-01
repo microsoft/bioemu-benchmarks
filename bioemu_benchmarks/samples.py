@@ -90,28 +90,36 @@ def find_samples_in_dir(samples_dir: StrPath) -> list[SequenceSample]:
 
 
 def select_relevant_samples(
-    sequence_samples: list[SequenceSample], relevant_sequences: set[str]
+    sequence_samples: list[SequenceSample], relevant_sequences: set[str] | set[None]
 ) -> list[SequenceSample]:
     seqs = [mdtraj.load_topology(ss.topology_file).to_fasta()[0] for ss in sequence_samples]
-    irrelevant_sequences_sampled = set(seqs).difference(relevant_sequences)
-    if irrelevant_sequences_sampled:
-        LOGGER.info(
-            f"Ignoring samples for {len(irrelevant_sequences_sampled)} irrelevant sequences."
-        )
 
-    return [files for files, seq in zip(sequence_samples, seqs) if seq in relevant_sequences]
+    if relevant_sequences == set([None]):
+        return [files for files in sequence_samples]
+    else:
+        irrelevant_sequences_sampled = set(seqs).difference(relevant_sequences)
+        if irrelevant_sequences_sampled:
+            LOGGER.info(
+                f"Ignoring samples for {len(irrelevant_sequences_sampled)} irrelevant sequences."
+            )
+
+        return [files for files, seq in zip(sequence_samples, seqs) if seq in relevant_sequences]
 
 
-class IndexedSamples:
+class IndexedSamples: 
     def __init__(self, test_case_to_sequencesamples: dict[str, list[SequenceSample]]):
         assert test_case_to_sequencesamples, "Empty input"
         self.test_case_to_sequencesamples = test_case_to_sequencesamples
 
     @classmethod
     def from_benchmark(
-        cls, benchmark: Benchmark, sequence_samples: list[SequenceSample]
+        cls, benchmark: Benchmark, sequence_samples: list[SequenceSample], test_case_list: list[str], include_relevant_sequences: bool =False
     ) -> "IndexedSamples":
-        benchmark_sequences = benchmark.metadata["sequence"]
+        
+        if include_relevant_sequences:
+            benchmark_sequences = benchmark.metadata["sequence"]
+        else:
+            benchmark_sequences = [None]
 
         # Ignore irrelevant samples, i.e., samples of sequences that are not in the benchmark.
         sequence_samples = select_relevant_samples(sequence_samples, set(benchmark_sequences))
@@ -126,28 +134,37 @@ class IndexedSamples:
 
             assert_topology_has_backbone_atoms(top)
 
-            assoc_test_cases = benchmark.metadata.loc[
-                benchmark.metadata["sequence"] == sequence
-            ].test_case
-            if isinstance(assoc_test_cases, str):
-                sequence_sample_to_test_cases[sequence_sample].append(assoc_test_cases)
+            if include_relevant_sequences:
+                assoc_test_cases = benchmark.metadata.loc[
+                    benchmark.metadata["sequence"] == sequence
+                ].test_case
+                if isinstance(assoc_test_cases, str):
+                    sequence_sample_to_test_cases[sequence_sample].append(assoc_test_cases)
+                else:
+                    assert isinstance(assoc_test_cases, pd.Series)
+                    sequence_sample_to_test_cases[sequence_sample].extend(assoc_test_cases)
+
+               
             else:
-                assert isinstance(assoc_test_cases, pd.Series)
-                sequence_sample_to_test_cases[sequence_sample].extend(assoc_test_cases)
+                assoc_test_cases = test_case_list
+                sequence_sample_to_test_cases[sequence_sample]= assoc_test_cases
 
             sampled_sequences.add(sequence)
+
+
 
         # Check if any relevant sequences have been sampled.
         if len(sampled_sequences) == 0:
             raise NoSamples("No samples found for benchmark.")
 
         # Report if missing sampled sequences
-        missing_sequences = set(benchmark_sequences).difference(sampled_sequences)
-        if len(missing_sequences) > 0:
-            LOGGER.warning(
-                f"Missing samples for {len(missing_sequences)} sequence(s) "
-                f"for this benchmark: {missing_sequences}"
-            )
+        if include_relevant_sequences:
+            missing_sequences = set(benchmark_sequences).difference(sampled_sequences)
+            if len(missing_sequences) > 0:
+                LOGGER.warning(
+                    f"Missing samples for {len(missing_sequences)} sequence(s) "
+                    f"for this benchmark: {missing_sequences}"
+                )
 
         # Build map from test case to samples
         test_case_to_sequencesamples: dict[str, list[SequenceSample]] = defaultdict(list)
