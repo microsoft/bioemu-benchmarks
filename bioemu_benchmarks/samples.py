@@ -194,6 +194,7 @@ def filter_unphysical_sequencesample(sequence_sample: SequenceSample, **kwargs) 
     """
     Adds physically valid frame information to `sequence_sample` instance.
     """
+
     assert sequence_sample.frames_to_include is None
     valid_indices = get_physical_traj_indices(sequence_sample.get_traj(), **kwargs)
     return SequenceSample(
@@ -239,6 +240,7 @@ def filter_unphysical_samples(
             desc="Filtering unphysical samples...",
         )
     }
+
 
     # Get filtered sample sizes
     test_case_to_filtered_sizes: dict[str, list[int]] = defaultdict(list)
