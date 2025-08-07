@@ -6,6 +6,7 @@ from bioemu_benchmarks.samples import IndexedSamples, filter_unphysical_samples,
 from bioemu_benchmarks.evaluator_utils import evaluator_from_benchmark
 import pandas as pd
 import os
+from glob import glob
 
 if __name__ == "__main__":
 
@@ -17,7 +18,7 @@ if __name__ == "__main__":
         help="Directory to save the sampled PDB, XTC files.",    
     )
     parser.add_argument(
-        "--testcases",
+        "--test_cases",
         type=str,
         default=".",   
         help="Directory containing the test cases for the benchmarks.",
@@ -25,8 +26,26 @@ if __name__ == "__main__":
     parser.add_argument(
         "--prediction_dir",
         type=str,
-        default="dynamicmpnn_infer",
+        default=".",
         help="Path to the CSV file containing predicted sequences.",
+    )
+    parser.add_argument(
+        "--msa_dir",
+        type=str,
+        default=".",
+        help="Path to the directory containing MSA files for each pair. (.a3m) alternative to prediciton dir with sequences",
+    )
+    parser.add_argument(
+        "--model_weights",
+        type=str,
+        default=".",
+        help="Path to the directory with model weights + config used for inference.",
+    )
+    parser.add_argument(
+        "--num_samples",
+        type=int,
+        default=1,
+        help="Number of samples to generate for each sequence.",
     )
     args = parser.parse_args()
     RESIDUE_LETTERS = [
@@ -52,26 +71,25 @@ if __name__ == "__main__":
         "V",
         "X",
     ]
-    #save the prediciton sequence as a FASTA file
-    # model predict a seq and save it as a FASTA file
 
-    domain_motion_df = pd.read_csv(os.path.join(args.prediction_dir, "domain_motion_inference.csv"))
-    pred_sequences = domain_motion_df['pred_sequence'].to_numpy()
-    ids = domain_motion_df['id'].to_numpy()
-    ids = domain_motion_df['id'].to_numpy()
+    
+    """ if args.prediction_dir !=".":
+         # load the prediction CSV file
+        domain_motion_df = pd.read_csv(os.path.join(args.prediction_dir, "domain_motion_inference.csv"))
+        pred_sequences = domain_motion_df['pred_sequence'].to_numpy()
+        ids = domain_motion_df['id'].to_numpy()
+        for (seq, id) in zip(pred_sequences, ids):
+            sub_dir = args.output_dir + "/" + id
+            seq = "".join([i if i != 'X' else "A" for i in seq])
+            sample(sequence= seq, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = 20)"""
 
-    # sample a sequence -> get pdb, xtc file . give the seqeunce produced by dynamicmpnn for each bnechmark 
-    #seq ="GYDGGAAAAA"
-    # can also pass a path to a single sequence FASTA file
+    # can also pass MSAs
+    msa_dir = glob(os.path.join(args.msa_dir, "*.a3m"))
+    for msa in msa_dir:
+        sub_dir = args.output_dir + "/" + msa.split("/")[-1].split(".")[0]
 
-    ## check this
+        sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = 20, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml")
 
-    for (seq, id) in zip(pred_sequences, ids):
-        sub_dir = args.output_dir + "/" + id
-        
-        seq = "".join([i if i != 'X' else "A" for i in seq])
-
-        sample(sequence= seq, num_samples=100, output_dir=sub_dir, filter_samples= False)
 
     # load testcases based on benchmarking set
     testcases = pd.read_csv(os.path.join(args.testcases, "testcases.csv"))
@@ -83,7 +101,7 @@ if __name__ == "__main__":
     samples = IndexedSamples.from_benchmark(benchmark=benchmark, sequence_samples=sequence_samples, test_case_list=testcases, include_relevant_sequences=False)
 
     # Filter unphysical-looking samples from getting evaluated
-    #samples, _sample_stats = filter_unphysical_samples(samples)
+    samples, _sample_stats = filter_unphysical_samples(samples)
 
     evaluator = evaluator_from_benchmark(benchmark=benchmark)
 
