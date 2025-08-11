@@ -47,6 +47,12 @@ if __name__ == "__main__":
         default=1,
         help="Number of samples to generate for each sequence.",
     )
+    parser.add_argument(
+        "--sample_idx",
+        type=int,
+        default=0,
+        help="Index of the sample to use from the MSA files.",
+    )
     args = parser.parse_args()
     RESIDUE_LETTERS = [
         "A",
@@ -85,10 +91,13 @@ if __name__ == "__main__":
 
     # can also pass MSAs
     msa_dir = glob(os.path.join(args.msa_dir, "*.a3m"))
-    for msa in msa_dir:
-        sub_dir = args.output_dir + "/" + msa.split("/")[-1].split(".")[0]
 
-        sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = 20, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml")
+    msa_list = list(msa_dir)
+    msa = msa_list[args.sample_idx]
+
+    sub_dir = args.output_dir + "/" + msa.split("/")[-1].split(".")[0]
+
+    sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = 20, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml")
 
 
     # load testcases based on benchmarking set
