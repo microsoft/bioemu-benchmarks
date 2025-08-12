@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
 
     # load testcases based on benchmarking set
-    testcases = pd.read_csv(os.path.join(args.testcases, "testcases.csv"))
+    testcases = pd.read_csv(os.path.join(args.test_cases, "testcases.csv"))
     testcases = testcases["test_case"].tolist()
     
     benchmark = Benchmark.MULTICONF_DOMAINMOTION
