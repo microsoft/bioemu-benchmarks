@@ -53,6 +53,12 @@ if __name__ == "__main__":
         default=0,
         help="Index of the sample to use from the MSA files.",
     )
+    parser.add_argument(
+        "--batch_size",
+        type=int,
+        default=10,
+        help="Batch size for 100 samples.",
+    )
     args = parser.parse_args()
     RESIDUE_LETTERS = [
         "A",
@@ -97,7 +103,7 @@ if __name__ == "__main__":
 
     sub_dir = args.output_dir + "/" + msa.split("/")[-1].split(".")[0]
 
-    sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = 20, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml")
+    sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = args.batch_size, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml")
 
 
     # load testcases based on benchmarking set
