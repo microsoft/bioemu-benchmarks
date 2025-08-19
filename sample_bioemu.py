@@ -59,6 +59,11 @@ if __name__ == "__main__":
         default=10,
         help="Batch size for 100 samples.",
     )
+    parser.add_argument(
+        "--denoiser_config_file",
+        type=str,
+        help="Path to the denoiser config file.",
+    )
     args = parser.parse_args()
     RESIDUE_LETTERS = [
         "A",
@@ -99,11 +104,13 @@ if __name__ == "__main__":
     msa_dir = glob(os.path.join(args.msa_dir, "*.a3m"))
 
     msa_list = list(msa_dir)
+
     msa = msa_list[args.sample_idx]
 
     sub_dir = args.output_dir + "/" + msa.split("/")[-1].split(".")[0]
 
-    sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= True, batch_size_100 = args.batch_size, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml")
+    sample(sequence= msa, num_samples=args.num_samples, output_dir=sub_dir, filter_samples= False, batch_size_100 = args.batch_size, ckpt_path = args.model_weights + "/" + "checkpoint.ckpt", model_config_path= args.model_weights + "/" + "config.yaml",
+           denoiser_config_path= args.denoiser_config_file)
 
 
     # load testcases based on benchmarking set
@@ -116,7 +123,7 @@ if __name__ == "__main__":
     samples = IndexedSamples.from_benchmark(benchmark=benchmark, sequence_samples=sequence_samples, test_case_list=testcases, include_relevant_sequences=False)
 
     # Filter unphysical-looking samples from getting evaluated
-    samples, _sample_stats = filter_unphysical_samples(samples)
+    #samples, _sample_stats = filter_unphysical_samples(samples)
 
     evaluator = evaluator_from_benchmark(benchmark=benchmark)
 
