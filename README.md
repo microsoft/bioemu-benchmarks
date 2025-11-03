@@ -1,6 +1,6 @@
 # Biomolecular Emulator - Benchmarks (BioEmu-Benchmarks)
 
-Accompanying benchmark code for the BioEmu [paper](https://www.biorxiv.org/content/10.1101/2024.12.05.626885v1). For the BioEmu sampling code please check [here](https://www.github.com/microsoft/bioemu).
+Accompanying benchmark code for the BioEmu [paper](https://www.science.org/doi/10.1126/science.adv9817). For the BioEmu sampling code please check [here](https://www.github.com/microsoft/bioemu).
 
 ## Table of Contents
 - [Installation](#installation)
@@ -29,7 +29,7 @@ Alternatively, an `environment.yml` file is also provided in case you prefer to 
 * `md_emulation`: Measure the match between model samples and target molecular dynamics distribution on low dimensional free energies surfaces. Includes free energy MAE and RMSE, as well as coverage of the samples as metrics.
 * `folding_free_energies`: Measures the ability to predict folding free energies ($\Delta G$ and $\Delta\Delta G$) based on the provided samples. Main metrics are the MAEs, as well as correlation coefficients on both metrics. 
 
-For details of the different benchmarks, please refer to the SI of the accompanying [publication](https://www.biorxiv.org/content/10.1101/2024.12.05.626885v1).
+For details of the different benchmarks, please refer to the SI of the accompanying [publication](https://www.science.org/doi/10.1126/science.adv9817).
 
 ## Usage
 
@@ -167,4 +167,4 @@ Use of Microsoft trademarks or logos in modified versions of this project must n
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
 ## Get in touch
-If you have any questions not covered here, please create an issue or contact the BioEmu team by writing to the corresponding author on our [preprint](https://doi.org/10.1101/2024.12.05.626885).
+If you have any questions not covered here, please create an issue or contact the BioEmu team by writing to the corresponding author on our [paper](https://www.science.org/doi/10.1126/science.adv9817).
