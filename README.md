@@ -1,6 +1,6 @@
 # Biomolecular Emulator - Benchmarks (BioEmu-Benchmarks)
 
-Accompanying benchmark code for the BioEmu [paper](https://www.biorxiv.org/content/10.1101/2024.12.05.626885v1). For the BioEmu sampling code please check [here](https://www.github.com/microsoft/bioemu).
+Accompanying benchmark code for the BioEmu [paper](https://www.science.org/doi/10.1126/science.adv9817). For the BioEmu sampling code please check [here](https://www.github.com/microsoft/bioemu).
 
 ## Table of Contents
 - [Installation](#installation)
@@ -29,7 +29,7 @@ Alternatively, an `environment.yml` file is also provided in case you prefer to 
 * `md_emulation`: Measure the match between model samples and target molecular dynamics distribution on low dimensional free energies surfaces. Includes free energy MAE and RMSE, as well as coverage of the samples as metrics.
 * `folding_free_energies`: Measures the ability to predict folding free energies ($\Delta G$ and $\Delta\Delta G$) based on the provided samples. Main metrics are the MAEs, as well as correlation coefficients on both metrics. 
 
-For details of the different benchmarks, please refer to the SI of the accompanying [publication](https://www.biorxiv.org/content/10.1101/2024.12.05.626885v1).
+For details of the different benchmarks, please refer to the SI of the accompanying [publication](https://www.science.org/doi/10.1126/science.adv9817).
 
 ## Usage
 
@@ -144,12 +144,13 @@ metadata = Benchmark.MULTICONF_OOD60.metadata
 ## Citation
 If you are using our code or model, please consider citing our work:
 ```bibtex
-@article {BioEmu2024,
-	author = {Lewis, Sarah and Hempel, Tim and Jim{\'e}nez-Luna, Jos{\'e} and Gastegger, Michael and Xie, Yu and Foong, Andrew Y. K. and Satorras, Victor Garc{\'\i}a and Abdin, Osama and Veeling, Bastiaan S. and Zaporozhets, Iryna and Chen, Yaoyi and Yang, Soojung and Schneuing, Arne and Nigam, Jigyasa and Barbero, Federico and Stimper, Vincent and Campbell, Andrew and Yim, Jason and Lienen, Marten and Shi, Yu and Zheng, Shuxin and Schulz, Hannes and Munir, Usman and Clementi, Cecilia and No{\'e}, Frank},
-	title = {Scalable emulation of protein equilibrium ensembles with generative deep learning},
-	year = {2024},
-	doi = {10.1101/2024.12.05.626885},
-	journal = {bioRxiv}
+@article{bioemu2025,
+  title={Scalable emulation of protein equilibrium ensembles with generative deep learning},
+  author={Lewis, Sarah and Hempel, Tim and Jim{\'e}nez-Luna, Jos{\'e} and Gastegger, Michael and Xie, Yu and Foong, Andrew YK and Satorras, Victor Garc{\'\i}a and Abdin, Osama and Veeling, Bastiaan S and Zaporozhets, Iryna and others},
+  journal={Science},
+  pages={eadv9817},
+  year={2025},
+  publisher={American Association for the Advancement of Science}
 }
 ```
 
@@ -166,4 +167,4 @@ Use of Microsoft trademarks or logos in modified versions of this project must n
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
 ## Get in touch
-If you have any questions not covered here, please create an issue or contact the BioEmu team by writing to the corresponding author on our [preprint](https://doi.org/10.1101/2024.12.05.626885).
+If you have any questions not covered here, please create an issue or contact the BioEmu team by writing to the corresponding author on our [paper](https://www.science.org/doi/10.1126/science.adv9817).
