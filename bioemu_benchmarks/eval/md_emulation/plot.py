@@ -180,7 +180,7 @@ def plot_projections(
         ax[1].tick_params(labelleft=False)
 
         # Get axis ranges.
-        x_range, y_range = _get_axis_ranges([reference_projection, sample_projection], buffer=0.5)
+        x_range, y_range = _get_axis_ranges([reference_projection, sample_projection], buffer=0.05)
 
         # Plot reference surface in first column.
         plot_free_energy_on_axes(
