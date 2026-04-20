@@ -11,13 +11,17 @@ Accompanying benchmark code for the BioEmu [paper](https://www.science.org/doi/1
 
 ## Installation
 
-`bioemu-benchmarks` is provided as a pip-installable package, requiring Python >= 3.10:
+`bioemu-benchmarks` is provided as a pip-installable package, requiring Python >= 3.10, < 3.13:
 
 ```bash
 pip install bioemu-benchmarks
 ```
 
-Alternatively, an `environment.yml` file is also provided in case you prefer to clone the repository and create a conda environment from scratch.
+For development, clone the repository and install with dev dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
 
 ## Available benchmarks
 

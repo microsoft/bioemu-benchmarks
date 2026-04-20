@@ -8,36 +8,32 @@ on:
     branches:
       - main
 
+  schedule:
+  - cron: 0 0 * * 1       # Weekly on Monday at 00:00 UTC
+
 jobs:
   linux:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
-    defaults:
-      run:
-        shell: bash -l {0}
+        python-version: ['3.10', '3.11', '3.12']
     name: Linux py ${{ matrix.python-version }} tests
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          set -e
-          wget -O "${HOME}/mambaforge.sh" "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
-          bash "${HOME}/mambaforge.sh" -b -p "${HOME}/conda"
-          source "${HOME}/conda/etc/profile.d/conda.sh"
-          conda env create --file environment.yml --name bioemu-benchmarks
-          conda activate bioemu-benchmarks
-          pip install -r dev-requirements.txt
-        name: set environment
-      - run: |
-          set -e
-          source "${HOME}/conda/etc/profile.d/conda.sh"
-          conda activate bioemu-benchmarks
-          pre-commit run --all-files
-        name: check style
-      - run: |
-          set -e
-          source "${HOME}/conda/etc/profile.d/conda.sh"
-          conda activate bioemu-benchmarks
-          pytest tests/
-        name: run tests
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv pip install --system -e ".[dev]"
+
+      - name: Check style
+        run: pre-commit run --all-files
+
+      - name: Run tests
+        run: pytest tests/

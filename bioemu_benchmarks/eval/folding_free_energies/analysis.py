@@ -144,7 +144,7 @@ def compute_confidence_intervals_ddG(
     def unmask_errors(errors: np.ndarray) -> np.ndarray:
         unmasked = np.zeros(missing_ddg.shape)
         unmasked[~missing_ddg] = errors
-        unmasked[missing_ddg] = np.NaN
+        unmasked[missing_ddg] = np.nan
         return unmasked
 
     free_energy_df["model_errors_ddg_lower"] = unmask_errors(model_errors_ddG_masked_lower)

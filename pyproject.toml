@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bioemu_benchmarks"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="BioEmu authors" },
 ]
 description = "Accompanying set of benchmarks for BioEmu 1.0 paper."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -19,21 +19,30 @@ classifiers = [
     "Topic :: System :: Benchmark"
 ]
 dependencies = [
-  "mdtraj >= 1.9.9",
+  "mdtraj == 1.9.9",
   "matplotlib >= 3.8.0",
   "pydantic >= 2.1.1",
-  "numpy >= 1.26.4",
+  "numpy >= 1.26.4, < 2.0.0",
   "pandas >= 2.1.4",
   "scipy >= 1.11.4",
   "joblib >= 1.4.2",
-  "biopython >= 1.5.9",
+  "biopython == 1.85",
   "urllib3 < 3.0.0",
   "tqdm >= 4.66.1",
   "requests >= 2.32.3",
   "h5py >= 3.10.0",
   "scikit-learn >= 1.5.2" ,
   "fire >= 0.5.0",
-  "seaborn >= 0.13.2"
+  "seaborn >= 0.13.2",
+  "setuptools >= 69.0.0, < 78.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit",
+  "pytest",
+  "pytest-cov",
+  "pytest-xdist",
 ]
 
 [project.urls] # URLs don't exist yet
