@@ -19,7 +19,7 @@ classifiers = [
     "Topic :: System :: Benchmark"
 ]
 dependencies = [
-  "mdtraj >= 1.9.9",
+  "mdtraj == 1.9.9",
   "matplotlib >= 3.8.0",
   "pydantic >= 2.1.1",
   "numpy >= 1.26.4",
