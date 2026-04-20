@@ -17,7 +17,11 @@ Accompanying benchmark code for the BioEmu [paper](https://www.science.org/doi/1
 pip install bioemu-benchmarks
 ```
 
-Alternatively, an `environment.yml` file is also provided in case you prefer to clone the repository and create a conda environment from scratch.
+For development, clone the repository and install with dev dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
 
 ## Available benchmarks
 

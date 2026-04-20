@@ -33,8 +33,16 @@ dependencies = [
   "h5py >= 3.10.0",
   "scikit-learn >= 1.5.2" ,
   "fire >= 0.5.0",
-  "seaborn >= 0.13.2"
+  "seaborn >= 0.13.2",
   "setuptools >= 69.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit",
+  "pytest",
+  "pytest-cov",
+  "pytest-xdist",
 ]
 
 [project.urls] # URLs don't exist yet
