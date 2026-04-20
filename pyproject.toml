@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Accompanying set of benchmarks for BioEmu 1.0 paper."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
