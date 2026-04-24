@@ -26,7 +26,7 @@ dependencies = [
   "pandas >= 2.1.4",
   "scipy >= 1.11.4",
   "joblib >= 1.4.2",
-  "biopython == 1.85",
+  "biopython == 1.87",
   "urllib3 < 3.0.0",
   "tqdm >= 4.66.1",
   "requests >= 2.32.3",
