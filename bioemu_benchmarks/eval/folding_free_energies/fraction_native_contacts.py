@@ -118,8 +118,9 @@ def _get_sequence_index_map(samples_sequence: str, reference_sequence: str) -> n
         Array mapping reference atom indices to sample atom indices. Atoms with no mapping are
         assigned -1.
     """
-    aligner = PairwiseAligner(mode="global", match_score=1, mismatch_score=0,
-                              open_gap_score=0, extend_gap_score=0)
+    aligner = PairwiseAligner(
+        mode="global", match_score=1, mismatch_score=0, open_gap_score=0, extend_gap_score=0
+    )
     alignment = aligner.align(samples_sequence, reference_sequence)[0]
     seq_a, seq_b = alignment[0], alignment[1]
     aligned_indices_sample = _get_aligned_indices(seq_a, seq_b)
