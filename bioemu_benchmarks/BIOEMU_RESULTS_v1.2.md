@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > These results were generated with `bioemu-benchmarks` v0.0.2 (pinned dependencies,
-> notably `mdtraj==1.10.3`). Rerunning the benchmarks with v1.0.0+ (unpinned
+> notably `mdtraj==1.9.9`). Rerunning the benchmarks with v1.0.0+ (unpinned
 > dependencies) will produce different numerical values.
 
 These are the results from BioEmu checkpoint version 1.2. NOTE: the model version associated with our [publication](https://www.science.org/doi/10.1126/science.adv9817) is BioEmu 1.1, whose results are shown in [BIOEMU_RESULTS_v1.1](BIOEMU_RESULTS_v1.1.md).
