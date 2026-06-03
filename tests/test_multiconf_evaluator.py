@@ -13,9 +13,8 @@ from bioemu_benchmarks.samples import IndexedSamples, find_samples_in_dir
 
 from . import TEST_DATA_DIR
 
-_EXPECTED_test_case_KRECALL = ("E1C7U0", MetricType.RMSD, [6.0333076, 4.7683716e-07])
-_EXPECTED_EVALUATOR_RESULTS: dict[Benchmark, list[str]] = {
-    Benchmark.MULTICONF_OOD60: [
+_EXPECTED_test_case_KRECALL = ("E1C7U0", MetricType.RMSD, [6.854523658752441, 0.0])
+_EXPECTED_EVALUATOR_RESULTS: dict[Benchmark, list[str]] = {    Benchmark.MULTICONF_OOD60: [
         "multiconf_ood60_rmsd_free_energy.png",
         "multiconf_ood60_contact-distance_coverage.png",
         "multiconf_ood60_dssp_acc_free_energy.png",

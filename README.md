@@ -1,5 +1,12 @@
 # Biomolecular Emulator - Benchmarks (BioEmu-Benchmarks)
 
+> [!WARNING]
+> **Breaking change (v1.0.0):** Dependency versions have been unpinned. Updated
+> packages (especially `mdtraj`) produce different numerical results for computed
+> metrics. Benchmark numbers generated with v0.0.2 are **not** directly comparable
+> to those generated with v1.0.0+. If you need to reproduce prior results, pin
+> dependencies to the versions listed in the v0.0.2 release.
+
 Accompanying benchmark code for the BioEmu [paper](https://www.science.org/doi/10.1126/science.adv9817). For the BioEmu sampling code please check [here](https://www.github.com/microsoft/bioemu).
 
 ## Table of Contents
