@@ -3,7 +3,7 @@ from itertools import combinations
 
 import mdtraj
 import numpy as np
-from Bio import pairwise2
+from Bio.Align import PairwiseAligner
 from scipy.special import expit
 
 from bioemu_benchmarks.logger import get_logger
@@ -118,10 +118,13 @@ def _get_sequence_index_map(samples_sequence: str, reference_sequence: str) -> n
         Array mapping reference atom indices to sample atom indices. Atoms with no mapping are
         assigned -1.
     """
-    # TODO: potential duplicate with `get_pairwise_align_traj `.
-    alignments = pairwise2.align.globalxx(samples_sequence, reference_sequence)
-    aligned_indices_sample = _get_aligned_indices(alignments[0].seqA, alignments[0].seqB)
-    aligned_indices_ref = _get_aligned_indices(alignments[0].seqB, alignments[0].seqA)
+    aligner = PairwiseAligner(
+        mode="global", match_score=1, mismatch_score=0, open_gap_score=0, extend_gap_score=0
+    )
+    alignment = aligner.align(samples_sequence, reference_sequence)[0]
+    seq_a, seq_b = alignment[0], alignment[1]
+    aligned_indices_sample = _get_aligned_indices(seq_a, seq_b)
+    aligned_indices_ref = _get_aligned_indices(seq_b, seq_a)
     assert len(aligned_indices_sample) == len(aligned_indices_ref)
 
     ref_to_samples_map = np.full(len(reference_sequence), -1, dtype=np.int64)

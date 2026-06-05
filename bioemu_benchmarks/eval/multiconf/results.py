@@ -262,7 +262,7 @@ class MulticonfResults(BenchmarkResults):
                 coverage_mean = np.mean(coverage_per_system, axis=0)
 
                 # Get area under the curve.
-                coverage_auc = np.trapz(coverage_mean, coverage_coordinates)
+                coverage_auc = np.trapezoid(coverage_mean, coverage_coordinates)
                 # Get value at metric / benchmark threshold.
                 coverage_threshold = np.interp(threshold, coverage_coordinates, coverage_mean)
 
