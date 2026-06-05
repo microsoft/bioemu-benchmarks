@@ -27,13 +27,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
 
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
+        run: uv sync --locked --extra dev --python ${{ matrix.python-version }}
 
       - name: Check style
-        run: pre-commit run --all-files
+        run: uv run pre-commit run --all-files
 
       - name: Run tests
-        run: pytest tests/
+        run: uv run pytest tests/
