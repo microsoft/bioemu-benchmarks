@@ -59,13 +59,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "biopython" },
+    { name = "biopython", specifier = ">=1.80" },
     { name = "fire" },
     { name = "h5py" },
     { name = "joblib" },
     { name = "matplotlib" },
     { name = "mdtraj" },
-    { name = "numpy" },
+    { name = "numpy", specifier = ">=2.0" },
     { name = "pandas" },
     { name = "pre-commit", marker = "extra == 'dev'" },
     { name = "pydantic" },
